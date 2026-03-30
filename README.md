@@ -2,7 +2,7 @@
 
 > A Gemini-powered AI app that analyzes spending, predicts budgets, and suggests smart investments — built specifically for students.
 
-🌐 **Live Demo:** https://finwise.vercel.app
+🌐 **Live Demo:** https://finwise-1nnfbr0lf-arnavwarale27-bots-projects.vercel.app/
 
 ---
 
