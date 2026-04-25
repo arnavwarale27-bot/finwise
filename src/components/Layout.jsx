@@ -11,7 +11,8 @@ import {
   ChevronRight,
   Bell,
   Search,
-  User
+  User,
+  Settings
 } from 'lucide-react';
 
 const navItems = [
@@ -21,6 +22,7 @@ const navItems = [
   { path: '/saving-plan', label: 'Saving Plan', icon: Target },
   { path: '/finbot', label: 'FinBot Chat', icon: MessageSquare },
   { path: '/time-machine', label: 'Time Machine', icon: Rocket },
+  { path: '/settings', label: 'Settings', icon: Settings },
 ];
 
 export default function Layout() {
@@ -100,7 +102,14 @@ export default function Layout() {
         </nav>
 
         <div className="hidden md:flex mt-auto p-6 border-t border-white/5">
-          <div className="flex items-center gap-4 w-full p-3 rounded-2xl hover:bg-white/5 transition-colors group cursor-pointer">
+          <NavLink 
+            to="/settings"
+            className={({ isActive }) => 
+              `flex items-center gap-4 w-full p-3 rounded-2xl hover:bg-white/5 transition-all group cursor-pointer ${
+                isActive ? 'bg-white/5 border border-white/10' : ''
+              }`
+            }
+          >
             <div className="w-10 h-10 rounded-xl bg-slate-800 flex items-center justify-center border border-white/5 group-hover:border-white/10">
               <User className="w-5 h-5 text-slate-400" />
             </div>
@@ -109,7 +118,7 @@ export default function Layout() {
               <p className="text-[11px] font-medium text-slate-500">Premium Plan</p>
             </div>
             <ChevronRight className="w-4 h-4 text-slate-600 group-hover:translate-x-0.5 transition-transform" />
-          </div>
+          </NavLink>
         </div>
       </aside>
 
@@ -131,9 +140,11 @@ export default function Layout() {
               <span className="absolute top-2.5 right-2.5 w-2 h-2 bg-accent-500 rounded-full border-2 border-[#020617]" />
             </button>
             <div className="h-8 w-[1px] bg-white/5 mx-2" />
-            <button className="bg-brand-600 hover:bg-brand-500 text-white px-5 py-2.5 rounded-xl text-sm font-bold shadow-lg shadow-brand-600/20 transition-all hover:-translate-y-0.5 active:translate-y-0">
-              Add Expense
-            </button>
+            <NavLink to="/expenses">
+              <button className="bg-brand-600 hover:bg-brand-500 text-white px-5 py-2.5 rounded-xl text-sm font-bold shadow-lg shadow-brand-600/20 transition-all hover:-translate-y-0.5 active:translate-y-0">
+                Add Expense
+              </button>
+            </NavLink>
           </div>
         </header>
 

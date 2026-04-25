@@ -6,6 +6,7 @@ import Analysis from './pages/Analysis';
 import SavingPlan from './pages/SavingPlan';
 import FinBot from './pages/FinBot';
 import TimeMachine from './pages/TimeMachine';
+import Settings from './pages/Settings';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path="saving-plan" element={<SavingPlan />} />
           <Route path="finbot" element={<FinBot />} />
           <Route path="time-machine" element={<TimeMachine />} />
+          <Route path="settings" element={<Settings />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Route>
       </Routes>
