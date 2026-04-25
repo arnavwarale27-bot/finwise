@@ -1,6 +1,22 @@
 import { useState, useRef, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { createFinBotChatSession } from '../utils/gemini';
-import { Send, Bot, User, AlertCircle } from 'lucide-react';
+import { Send, Bot, User, AlertCircle, Sparkles, BrainCircuit } from 'lucide-react';
+
+const container = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1
+    }
+  }
+};
+
+const item = {
+  hidden: { opacity: 0, y: 10 },
+  show: { opacity: 1, y: 0 }
+};
 
 export default function FinBot() {
   const [messages, setMessages] = useState([
@@ -12,7 +28,6 @@ export default function FinBot() {
   const messagesEndRef = useRef(null);
 
   useEffect(() => {
-    // Initialize chat session once on mount
     const session = createFinBotChatSession();
     if (session) {
        setChatSession(session);
@@ -20,7 +35,6 @@ export default function FinBot() {
   }, []);
 
   useEffect(() => {
-    // Scroll to bottom on new message
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
@@ -46,72 +60,102 @@ export default function FinBot() {
   };
 
   return (
-    <div className="flex flex-col h-[calc(100vh-140px)] md:h-[calc(100vh-100px)]">
-      <header className="mb-6 shrink-0 mt-4 md:mt-0">
-        <h1 className="text-3xl font-light text-slate-100 mb-2">
-          FinBot
-        </h1>
-        <p className="text-sm text-slate-400">Ask any financial question 24/7.</p>
+    <motion.div 
+      variants={container}
+      initial="hidden"
+      animate="show"
+      className="flex flex-col h-[calc(100vh-140px)] md:h-[calc(100vh-120px)] space-y-8"
+    >
+      <header className="shrink-0">
+        <motion.h1 variants={item} className="text-4xl font-bold text-white mb-2 tracking-tight">
+          FinBot Neural Chat
+        </motion.h1>
+        <motion.p variants={item} className="text-slate-400 font-medium">
+          Real-time financial advisory powered by <span className="text-brand-400">Gemini Neural Matrix</span>.
+        </motion.p>
       </header>
 
-      <div className="flex-1 glass rounded-2xl border border-brand-500/20 overflow-hidden flex flex-col h-full">
+      <motion.div variants={item} className="flex-1 glass-card rounded-[2.5rem] border border-white/5 overflow-hidden flex flex-col shadow-[0_0_50px_rgba(0,0,0,0.3)] relative">
+         <div className="absolute top-0 right-0 w-64 h-64 bg-brand-500/5 rounded-full blur-[80px] -mr-32 -mt-32 pointer-events-none" />
+         
          {!chatSession && (
-             <div className="p-4 bg-red-500/10 border-b border-red-500/20 text-red-400 flex items-center gap-2">
-                <AlertCircle className="w-5 h-5" />
-                <span>API Key missing. Please set VITE_GEMINI_API_KEY in your .env file.</span>
+             <div className="p-4 bg-rose-500/10 border-b border-rose-500/10 text-rose-400 flex items-center justify-center gap-3 text-xs font-bold uppercase tracking-widest relative z-10">
+                <AlertCircle className="w-4 h-4" />
+                <span>Neural connection offline. Verify API configuration.</span>
              </div>
          )}
          
         {/* Chat Messages */}
-        <div className="flex-1 overflow-y-auto p-4 md:p-6 space-y-6 custom-scrollbar">
-          {messages.map((m) => (
-             <div key={m.id} className={`flex gap-4 max-w-[85%] ${m.role === 'user' ? 'ml-auto flex-row-reverse' : ''}`}>
-                <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${m.role === 'user' ? 'bg-brand-600' : 'bg-slate-700'}`}>
-                   {m.role === 'user' ? <User className="w-5 h-5 text-white" /> : <Bot className="w-5 h-5 text-brand-300" />}
-                </div>
-                <div className={`p-4 rounded-2xl ${m.role === 'user' ? 'bg-brand-600/20 text-slate-200 border border-brand-500/30 rounded-tr-none' : 'bg-slate-800/60 text-slate-300 border border-slate-700/50 rounded-tl-none'}`}>
-                   {m.content}
-                </div>
-             </div>
-          ))}
+        <div className="flex-1 overflow-y-auto p-6 md:p-10 space-y-8 hide-scrollbar relative z-10">
+          <AnimatePresence initial={false}>
+            {messages.map((m) => (
+               <motion.div 
+                key={m.id} 
+                initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                className={`flex gap-5 max-w-[85%] ${m.role === 'user' ? 'ml-auto flex-row-reverse' : ''}`}
+               >
+                  <div className={`w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 shadow-lg ${
+                    m.role === 'user' ? 'bg-brand-600 shadow-brand-600/20' : 'bg-slate-800 shadow-black/20'
+                  }`}>
+                     {m.role === 'user' ? <User className="w-6 h-6 text-white" /> : <Bot className="w-6 h-6 text-brand-400" />}
+                  </div>
+                  <div className={`p-6 rounded-[1.5rem] text-[15px] font-medium leading-relaxed shadow-sm ${
+                    m.role === 'user' 
+                      ? 'bg-brand-600/10 text-slate-100 border border-brand-500/20 rounded-tr-none' 
+                      : 'bg-white/5 text-slate-300 border border-white/5 rounded-tl-none'
+                  }`}>
+                     {m.content}
+                  </div>
+               </motion.div>
+            ))}
+          </AnimatePresence>
           
           {loading && (
-             <div className="flex gap-4 max-w-[85%]">
-                <div className="w-8 h-8 rounded-full flex items-center justify-center bg-slate-700 shrink-0">
-                   <Bot className="w-5 h-5 text-brand-300" />
+             <motion.div 
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="flex gap-5 max-w-[85%]"
+             >
+                <div className="w-12 h-12 rounded-2xl flex items-center justify-center bg-slate-800 shrink-0 shadow-lg shadow-black/20">
+                   <Bot className="w-6 h-6 text-brand-400" />
                 </div>
-                <div className="p-4 rounded-2xl bg-slate-800/60 text-slate-300 border border-slate-700/50 rounded-tl-none flex items-center gap-1">
-                   <span className="w-2 h-2 rounded-full bg-brand-400 animate-bounce" style={{ animationDelay: '0ms' }} />
-                   <span className="w-2 h-2 rounded-full bg-brand-400 animate-bounce" style={{ animationDelay: '150ms' }} />
-                   <span className="w-2 h-2 rounded-full bg-brand-400 animate-bounce" style={{ animationDelay: '300ms' }} />
+                <div className="p-6 rounded-[1.5rem] bg-white/5 text-slate-300 border border-white/5 rounded-tl-none flex items-center gap-2">
+                   <motion.span animate={{ scale: [1, 1.5, 1] }} transition={{ repeat: Infinity, duration: 1 }} className="w-2 h-2 rounded-full bg-brand-400" />
+                   <motion.span animate={{ scale: [1, 1.5, 1] }} transition={{ repeat: Infinity, duration: 1, delay: 0.2 }} className="w-2 h-2 rounded-full bg-brand-400" />
+                   <motion.span animate={{ scale: [1, 1.5, 1] }} transition={{ repeat: Infinity, duration: 1, delay: 0.4 }} className="w-2 h-2 rounded-full bg-brand-400" />
                 </div>
-             </div>
+             </motion.div>
           )}
           
           <div ref={messagesEndRef} />
         </div>
 
         {/* Input Area */}
-        <div className="p-4 pb-4 bg-slate-900 border-t border-slate-800/50 shrink-0">
-          <form onSubmit={handleSend} className="relative max-w-4xl mx-auto flex items-center">
+        <div className="p-6 md:p-8 border-t border-white/5 shrink-0 relative z-10 backdrop-blur-md">
+          <form onSubmit={handleSend} className="relative max-w-5xl mx-auto flex items-center group">
+             <div className="absolute left-6 text-brand-400 opacity-50 group-focus-within:opacity-100 transition-opacity">
+               <Sparkles className="w-5 h-5" />
+             </div>
              <input 
                type="text"
                value={input}
                disabled={!chatSession || loading}
                onChange={e => setInput(e.target.value)}
-               placeholder="How do I save taxes effectively?"
-               className="w-full bg-slate-800 border border-slate-700/50 rounded-full pl-6 pr-14 py-4 text-slate-200 focus:outline-none focus:border-brand-500/50 disabled:opacity-50"
+               placeholder="How do I optimize my portfolio for the next quarter?"
+               className="w-full bg-white/5 border border-white/5 rounded-[1.5rem] pl-16 pr-16 py-5 text-sm font-bold text-white focus:border-brand-500/50 outline-none transition-all placeholder:text-slate-700 disabled:opacity-50"
              />
              <button
                type="submit"
                disabled={!input.trim() || !chatSession || loading}
-               className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-brand-600 hover:bg-brand-500 flex items-center justify-center text-white transition-colors disabled:opacity-50 disabled:hover:bg-brand-600"
+               className="absolute right-3 w-12 h-12 rounded-2xl bg-brand-600 hover:bg-brand-500 flex items-center justify-center text-white transition-all shadow-lg shadow-brand-600/20 disabled:opacity-50 hover:-translate-y-0.5 active:translate-y-0"
              >
                <Send className="w-5 h-5 ml-0.5" />
              </button>
           </form>
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 }
+
