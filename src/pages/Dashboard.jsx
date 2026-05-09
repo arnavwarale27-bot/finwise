@@ -121,7 +121,7 @@ export default function Dashboard() {
     >
       <header className="flex flex-col md:flex-row md:items-end justify-between gap-6">
         <div>
-          <motion.h1 variants={item} className="text-4xl font-bold text-white mb-2 tracking-tight">
+          <motion.h1 variants={item} className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-brand-400 via-white to-indigo-400 mb-2 tracking-tight drop-shadow-sm hover:scale-[1.02] transition-transform origin-left cursor-default">
             Wealth Overview
           </motion.h1>
           <motion.p variants={item} className="text-slate-400 font-medium">

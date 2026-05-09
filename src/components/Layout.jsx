@@ -44,7 +44,7 @@ export default function Layout() {
             <div className="p-2.5 bg-gradient-to-br from-brand-500 to-indigo-600 rounded-2xl shadow-lg shadow-brand-500/20 group-hover:scale-110 transition-transform duration-300">
               <Wallet className="w-6 h-6 text-white" />
             </div>
-            <h1 className="text-2xl font-bold tracking-tight bg-gradient-to-r from-white to-slate-400 bg-clip-text text-transparent">
+            <h1 className="text-2xl font-bold tracking-tight bg-gradient-to-r from-red-500 to-rose-400 bg-clip-text text-transparent">
               FinWise
             </h1>
           </div>
