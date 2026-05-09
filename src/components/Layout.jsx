@@ -29,12 +29,12 @@ export default function Layout() {
   const location = useLocation();
 
   return (
-    <div className="flex flex-col md:flex-row min-h-screen bg-[#020617] text-slate-50 font-['Outfit'] overflow-hidden">
+    <div className="flex flex-col md:flex-row min-h-screen mesh-gradient text-slate-50 font-['Outfit'] overflow-hidden relative">
       {/* Background Decorative Elements */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
-        <div className="absolute -top-[10%] -left-[10%] w-[40%] h-[40%] bg-brand-600/20 rounded-full blur-[120px] animate-pulse" />
-        <div className="absolute top-[20%] -right-[10%] w-[35%] h-[35%] bg-indigo-600/15 rounded-full blur-[100px]" />
-        <div className="absolute -bottom-[10%] left-[20%] w-[30%] h-[30%] bg-accent-600/10 rounded-full blur-[80px]" />
+        <div className="absolute -top-[10%] -left-[10%] w-[40%] h-[40%] bg-brand-600/20 rounded-full blur-[120px] animate-pulse" style={{ animationDuration: '4s' }} />
+        <div className="absolute top-[20%] -right-[10%] w-[35%] h-[35%] bg-indigo-600/15 rounded-full blur-[100px] animate-float" style={{ animationDelay: '1s' }} />
+        <div className="absolute -bottom-[10%] left-[20%] w-[30%] h-[30%] bg-accent-600/10 rounded-full blur-[80px] animate-float" style={{ animationDelay: '2s' }} />
       </div>
 
       {/* Sidebar Navigation */}
